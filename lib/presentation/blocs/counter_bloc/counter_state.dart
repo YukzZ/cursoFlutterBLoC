@@ -1,5 +1,5 @@
 part of 'counter_bloc.dart';
-
+//Similar a los cubits, se tiene el estado
 class CounterState extends Equatable {
 
   final int counter;
