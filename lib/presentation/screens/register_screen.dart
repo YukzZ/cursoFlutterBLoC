@@ -46,59 +46,64 @@ class _RegisterView extends StatelessWidget {
   }
 }
 
-class _RegisterForm extends StatefulWidget {
+class _RegisterForm extends StatelessWidget {
   const _RegisterForm();
 
-  @override
-  State<_RegisterForm> createState() => _RegisterFormState();
-}
-
-class _RegisterFormState extends State<_RegisterForm> {
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
+  // final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     final registerCubit = context.watch<RegisterCubit>();
+    final userName = registerCubit.state.userName;
+    final password = registerCubit.state.password;
+    final email = registerCubit.state.email;
+
 
     return Form(
-      key: _formKey,
+      // key: _formKey,
       child: Column(
         children: [
           CustomTextFormField(
             label: 'Nombre de Usuario',
-            onChange: (value) {
-              registerCubit.userNameChange(value);
-              _formKey.currentState?.validate();
-            },
-            validator: (value) {
-              if (value == null || value.isEmpty) return 'Campo requerido';
-              if (value.trim().isEmpty) return 'Campo requerido';
-              if (value.length < 6) return 'Mas de 6 letras';
+            // onChange: (value) {
+            //   registerCubit.userNameChange(value);
+            //   _formKey.currentState?.validate();
+            // },
+            onChange: registerCubit.userNameChange,
+            // validator: (value) {
+            //   if (value == null || value.isEmpty) return 'Campo requerido';
+            //   if (value.trim().isEmpty) return 'Campo requerido';
+            //   if (value.length < 6) return 'Mas de 6 letras';
 
-              return null;
-            },
+            //   return null;
+            // },
+
+            //Mensaje de error con objeto UserName
+            errorMessage: userName.errorMessage,
           ),
           const SizedBox(
             height: 10,
           ),
           CustomTextFormField(
             label: 'Correo electronico',
-            onChange: (value) {
-              registerCubit.emailChange(value);
-              _formKey.currentState?.validate();
-            },
-            validator: (value) {
-              if (value == null || value.isEmpty) return 'Campo requerido';
-              if (value.trim().isEmpty) return 'Campo requerido';
+            // onChange: (value) {
+            //   registerCubit.emailChange(value);
+            //   _formKey.currentState?.validate();
+            // },
+            onChange: registerCubit.emailChange,
+            // validator: (value) {
+            //   if (value == null || value.isEmpty) return 'Campo requerido';
+            //   if (value.trim().isEmpty) return 'Campo requerido';
 
-              final emailRegExp = RegExp(
-                r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$',
-              );
-              if (!emailRegExp.hasMatch(value))
-                return 'No tiene formato de correo';
+            //   final emailRegExp = RegExp(
+            //     r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$',
+            //   );
+            //   if (!emailRegExp.hasMatch(value)) {
+            //     return 'No tiene formato de correo';
+            //   }
 
-              return null;
-            },
+            //   return null;
+            // },
+            errorMessage: email.errorMessage,
           ),
           const SizedBox(
             height: 10,
@@ -106,25 +111,27 @@ class _RegisterFormState extends State<_RegisterForm> {
           CustomTextFormField(
             label: 'Contraseña',
             obscureText: true,
-            onChange: (value) {
-              registerCubit.passwordChange(value);
-              _formKey.currentState?.validate();
-            },
-            validator: (value) {
-              if (value == null || value.isEmpty) return 'Campo requerido';
-              if (value.trim().isEmpty) return 'Campo requerido';
-              if (value.length < 6) return 'Mas de 6 letras';
+            // onChange: (value) {
+            //   registerCubit.passwordChange(value);
+            //   _formKey.currentState?.validate();
+            // },
+            onChange: registerCubit.passwordChange,
+            // validator: (value) {
+            //   if (value == null || value.isEmpty) return 'Campo requerido';
+            //   if (value.trim().isEmpty) return 'Campo requerido';
+            //   if (value.length < 6) return 'Mas de 6 letras';
 
-              return null;
-            },
+            //   return null;
+            // },
+            errorMessage: password.errorMessage,
           ),
           const SizedBox(
             height: 20,
           ),
-          FilledButton.icon(
+          FilledButton.tonalIcon(
             onPressed: () {
-              final isValid = _formKey.currentState!.validate();
-              if (!isValid) return;
+              // final isValid = _formKey.currentState!.validate();
+              // if (!isValid) return;
 
               registerCubit.onSubmit();
             },
